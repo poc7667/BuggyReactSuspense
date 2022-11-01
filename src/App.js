@@ -1,25 +1,30 @@
-import logo from './logo.svg';
+import Articles from "./Articles";
+import Issues from "./Issues";
 import './App.css';
+import React, { lazy, Suspense } from "react";
+import SideBar from "./SideBar";
+import { Route, Routes, useParams } from 'react-router-dom';
+import { ErrorBoundary } from 'react-error-boundary';
+
+function errorBoundaryFallback(sendEventHandler) {
+    return ({ error }) => {
+        console.warn(error)
+    };
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <ErrorBoundary FallbackComponent={errorBoundaryFallback} >
+            <div className="App">
+                <SideBar></SideBar>
+                <Routes>
+                    <Route element={<Articles/>} path={'articles/*'}/>
+                    <Route element={<Issues/>} path={'issues/*'}/>
+                </Routes>
+            </div>
+        </ErrorBoundary>
+
+    );
 }
 
 export default App;
